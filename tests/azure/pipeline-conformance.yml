@@ -1,0 +1,28 @@
+
+parameters:
+  - name: CTSRepo
+    type: string
+    default: https://github.com/KhronosGroup/OpenCL-CTS
+  - name: CTSBranch
+    type: string
+    default: master
+
+trigger: none
+pr: none
+
+variables:
+  WORK: "$(Build.SourcesDirectory)"
+
+jobs:
+- template: job-conformance.yml
+  parameters:
+    vmImage: ubuntu-18.04
+    os: linux
+    CTSRepo: ${{ parameters.CTSRepo }}
+    CTSBranch: ${{ parameters.CTSBranch }}
+- template: job-conformance.yml
+  parameters:
+    vmImage: macOS-10.15
+    os: osx
+    CTSRepo: ${{ parameters.CTSRepo }}
+    CTSBranch: ${{ parameters.CTSBranch }}
