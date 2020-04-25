@@ -26,3 +26,9 @@ jobs:
     os: osx
     CTSRepo: ${{ parameters.CTSRepo }}
     CTSBranch: ${{ parameters.CTSBranch }}
+- template: job-conformance.yml
+  parameters:
+    vmImage: vs2017-win2016
+    os: windows
+    CTSRepo: ${{ parameters.CTSRepo }}
+    CTSBranch: ${{ parameters.CTSBranch }}
