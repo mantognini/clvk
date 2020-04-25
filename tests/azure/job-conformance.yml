@@ -29,7 +29,7 @@ jobs:
       mkdir build
       cd build
       cmake -DOPENCL_ICD_LOADER_HEADERS_DIR=$(WORK)/external/OpenCL-Headers/ ..
-      cmake -j3 --build .
+      cmake --build . -j3
     displayName: Build OpenCL ICD Loader
   - script: git clone -b ${{ parameters.CTSBranch }} ${{ parameters.CTSRepo }}
     displayName: Fetch OpenCL CTS Sources
@@ -45,7 +45,7 @@ jobs:
             -DOPENCL_LIBRARIES="-lOpenCL -lpthread" \
             -DUSE_CL_EXPERIMENTAL=ON \
             ..
-      cmake -j3 --build .
+      cmake --build . -j3
     displayName: Build OpenCL CTS
   - publish: $(WORK)/OpenCL-CTS/build/bin
     artifact: conformance-$(Agent.OS)
