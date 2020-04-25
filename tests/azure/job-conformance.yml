@@ -35,14 +35,14 @@ jobs:
     displayName: Fetch OpenCL CTS Sources
   - bash: |
       set -ex
-      ln -S $(WORK)/external/OpenCL-Headers/CL $(WORK)/external/OpenCL-Headers/OpenCL
+      ln -s "$(WORK)"/external/OpenCL-Headers/CL "$(WORK)"/external/OpenCL-Headers/OpenCL
       cd OpenCL-CTS
       mkdir build
       cd build
-      cmake -DCL_INCLUDE_DIR=$(WORK)/external/OpenCL-Headers \
-            -DCL_LIB_DIR=$(WORK)/OpenCL-ICD-Loader/build \
+      cmake -DCL_INCLUDE_DIR="$(WORK)"/external/OpenCL-Headers \
+            -DCL_LIB_DIR="$(WORK)"/OpenCL-ICD-Loader/build \
             -DCL_LIBCLCXX_DIR=dummy \
-            -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=$(WORK)/OpenCL-CTS/build/bin \
+            -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="$(WORK)"/OpenCL-CTS/build/bin \
             -DOPENCL_LIBRARIES="-lOpenCL -lpthread" \
             -DUSE_CL_EXPERIMENTAL=ON \
             ..
