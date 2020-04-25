@@ -28,7 +28,7 @@ jobs:
       cd OpenCL-ICD-Loader
       mkdir build
       cd build
-      cmake -DOPENCL_ICD_LOADER_HEADERS_DIR="$(WORK)"/external/OpenCL-Headers/ ..
+      cmake -DCMAKE_BUILD_TYPE=Release -DOPENCL_ICD_LOADER_HEADERS_DIR="$(WORK)"/external/OpenCL-Headers/ ..
       cmake --build . -j3
     displayName: Build OpenCL ICD Loader
   - script: git clone -b ${{ parameters.CTSBranch }} ${{ parameters.CTSRepo }}
@@ -39,7 +39,11 @@ jobs:
       cd OpenCL-CTS
       mkdir build
       cd build
-      cmake -DCL_INCLUDE_DIR="$(WORK)"/external/OpenCL-Headers \
+      if [ -d "$(WORK)"/OpenCL-ICD-Loader/build/Release ]; then
+        cp "$(WORK)"/OpenCL-ICD-Loader/build/Release/OpenCL.dll "$(WORK)"/OpenCL-ICD-Loader/build/
+      fi
+      cmake -DCMAKE_BUILD_TYPE=Release \
+            -DCL_INCLUDE_DIR="$(WORK)"/external/OpenCL-Headers \
             -DCL_LIB_DIR="$(WORK)"/OpenCL-ICD-Loader/build \
             -DCL_LIBCLCXX_DIR=dummy \
             -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="$(WORK)"/OpenCL-CTS/build/bin \
