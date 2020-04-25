@@ -28,13 +28,14 @@ jobs:
       cd OpenCL-ICD-Loader
       mkdir build
       cd build
-      cmake -DOPENCL_ICD_LOADER_HEADERS_DIR=$(WORK)/external/OpenCL-Headers/ ..
+      cmake -DOPENCL_ICD_LOADER_HEADERS_DIR="$(WORK)"/external/OpenCL-Headers/ ..
       cmake --build . -j3
     displayName: Build OpenCL ICD Loader
   - script: git clone -b ${{ parameters.CTSBranch }} ${{ parameters.CTSRepo }}
     displayName: Fetch OpenCL CTS Sources
   - bash: |
       set -ex
+      ln -S $(WORK)/external/OpenCL-Headers/CL $(WORK)/external/OpenCL-Headers/OpenCL
       cd OpenCL-CTS
       mkdir build
       cd build
