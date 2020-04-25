@@ -35,19 +35,26 @@ jobs:
     displayName: Fetch OpenCL CTS Sources
   - bash: |
       set -ex
-      ln -s "$(WORK)"/external/OpenCL-Headers/CL "$(WORK)"/external/OpenCL-Headers/OpenCL
+      if [ ${{ parameters.os }} == osx ]; then
+        ln -s "$(WORK)"/external/OpenCL-Headers/CL "$(WORK)"/external/OpenCL-Headers/OpenCL
+      fi
       cd OpenCL-CTS
       mkdir build
       cd build
       if [ -d "$(WORK)"/OpenCL-ICD-Loader/build/Release ]; then
         cp "$(WORK)"/OpenCL-ICD-Loader/build/Release/OpenCL.dll "$(WORK)"/OpenCL-ICD-Loader/build/
       fi
+      if [ ${{ parameters.os }} == windows ]; then
+        CTS_LIBS="OpenCL"
+      else
+        CTS_LIBS="-lOpenCL -lpthread"
+      fi
       cmake -DCMAKE_BUILD_TYPE=Release \
             -DCL_INCLUDE_DIR="$(WORK)"/external/OpenCL-Headers \
             -DCL_LIB_DIR="$(WORK)"/OpenCL-ICD-Loader/build \
             -DCL_LIBCLCXX_DIR=dummy \
             -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="$(WORK)"/OpenCL-CTS/build/bin \
-            -DOPENCL_LIBRARIES="-lOpenCL -lpthread" \
+            -DOPENCL_LIBRARIES="${CTS_LIBS}" \
             -DUSE_CL_EXPERIMENTAL=ON \
             ..
       cmake --build . --config Release -j3
