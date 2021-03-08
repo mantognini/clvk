@@ -46,6 +46,8 @@ steps:
         configuration: ${{ parameters.buildType }}
         ${{ if eq(parameters.useClCache, true) }}:
           msbuildArguments: '/p:CLToolExe=clcache.exe'
+    - publish: ./build/clspv.exe
+      artifact: clvk-clspv-$(Agent.OS)
   - ${{ if ne(parameters.os, 'windows') }}:
     - script: |
         set -ex
@@ -53,4 +55,8 @@ steps:
         make -C build -j3
         which ccache && ccache --show-stats || echo "ccache not available"
       displayName: make
+    - publish: ./build/clspv
+      artifact: clvk-clspv-$(Agent.OS)
+  - publish: ./build/libOpenCL*
+    artifact: clvk-lib-$(Agent.OS)
 
