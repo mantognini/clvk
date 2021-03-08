@@ -1,6 +1,7 @@
 trigger:
   - master
   - azure-pipelines
+  - ci-artefacts
 
 pr:
   - master
