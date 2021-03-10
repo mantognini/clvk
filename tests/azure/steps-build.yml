@@ -54,7 +54,7 @@ steps:
         make -C build -j3
         which ccache && ccache --show-stats || echo "ccache not available"
       displayName: make
-  - script: cmake --install .
+  - script: cmake --install ./build
     displayName: install
   - publish: ./install
     artifact: clvk-$(Agent.OS)
